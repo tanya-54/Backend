@@ -1,0 +1,19 @@
+{
+  "name": "js_backend",
+  "version": "1.0.0",
+  "description": "a backend project with chai and code",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev" :"nodemon src/index.js"
+  },
+  "keywords": [
+    "node",
+    "backend"
+  ],
+  "author": "Tanya Dubey",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
