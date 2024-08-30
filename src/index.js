@@ -24,18 +24,6 @@ connectDB()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 import mongoose from "mongoose";
 import { DB_NAME} from "./constants.js" ;          // here we are importing database name that we mentioned in constants file and 
 import express from "express";
