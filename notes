@@ -1,0 +1,2 @@
+For file uploads we use multer and express fileupload .
+multer and express upload both do the same thing for uploading files in the backend.
