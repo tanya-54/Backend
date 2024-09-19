@@ -5,16 +5,17 @@
 
  const router = Router()
 
- router.route("/register").post(registerUser)
- upload.fields([
-    {
-        name:"avatar",
-        maxCount: 1
-    },
-    {
-        name: "coverImage",
-        maxCount : 1
-    }
- ])
+ router.route("/register").post(
+    upload.fields([   //uploads is coming from multer so it provides various methods  & now we can send images .
+        {
+            name:"avatar",
+            maxCount: 1
+        },
+        {
+            name: "coverImage",
+            maxCount : 1
+        }
+     ]),
+ registerUser)
 
  export default router;

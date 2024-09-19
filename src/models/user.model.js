@@ -54,8 +54,7 @@ const userSchema = new Schema({
     },
     
     refreshToken :{
-        type : String ,
-        
+        type : String ,    
     }
 
      
@@ -100,4 +99,4 @@ userSchema.methods.generateRefreshToken = function(){
     )
 }
 
-export const User = mongoose.model("User" , userSchema) ;  //now mongodb will export
+export const User = mongoose.model("User" , userSchema) ;  //now mongodb will export.

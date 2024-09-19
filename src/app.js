@@ -20,7 +20,7 @@ app.use(cookieParser()) ;                     //server se user ke web browser ki
 
 
 // routes declaration 
-app.use("api/v1/users" , userRouter)
+app.use("/api/v1/users" , userRouter)
 
 // https://localhost:8000/api/users/register
 
