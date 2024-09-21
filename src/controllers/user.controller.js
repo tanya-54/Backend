@@ -37,7 +37,7 @@ const avatar = await uploadOnCloudinary(avatarLocalPath)
 const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
 if(!avatar){
-    throw new ApiError(400 , "Avatar is required") ;
+    throw new ApiError(400 , "Avatar file is required") ;
 }
 const user = await User.create({
     fullName,
@@ -49,7 +49,7 @@ const user = await User.create({
 })
  const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
- )
+ ) //by default everything is selected in .select
  if(!createdUser) {
     throw new ApiError(500 , "something went wrong while registering the user");
  }
