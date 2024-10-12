@@ -225,73 +225,80 @@ try {
 }
 })
 
+const changeCurrentPassword = asyncHandler(async(req, res ) =>{
+    const {oldPassword , newPassword} =req.body
 
-
-
-
-const changeCurrentPassword = asyncHandler(async(req, res) => {
-    const {oldPassword, newPassword} = req.body
-
-    
 
     const user = await User.findById(req.user?._id)
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 
-    if (!isPasswordCorrect) {
-        throw new ApiError(400, "Invalid old password")
+    if(!isPasswordCorrect){
+        throw new ApiError(400, "Incorrect password")
     }
 
     user.password = newPassword
-    await user.save({validateBeforeSave: false})
+    await user.save({validateBeforeSave:false})
 
-    return res
+    return res 
     .status(200)
-    .json(new ApiResponse(200, {}, "Password changed successfully"))
+    .json(new ApiResponse(200,{}, "Password changes successfully"))
+
 })
+
+
 //now here the loginand logout user will be shortlist
+const getCurrentUser = asyncHandler(async(req,res) =>{
+   
 
-const getCurrentUser = asyncHandler(async(req, res) => {
     return res
     .status(200)
-    .json(new ApiResponse(
-        200,
-        req.user,
-        "User fetched successfully"
-    ))
+    .json(new ApiResponse(200, req.user , "Current user fetched successfully"))
+
 })
 
-const updateAccountDetails = asyncHandler(async(req, res) => {
-    const {fullName, email} = req.body
-
-    if (!fullName || !email) {
-        throw new ApiError(400, "All fields are required")
+const updateAccountDetails = asyncHandler(async(req, res)=>{
+    const {fullName,email } = req.body
+     
+    if(!fullName || !email){
+        throw new ApiError(200 , "All details are required")
     }
 
-    const user = await User.findByIdAndUpdate(
+    const user  = User.findByIdAndUpdate(
         req.user?._id,
         {
-            $set: {
-                fullName,
-                email: email
+            $set:{
+                fullName:fullName,
+                email:email
             }
         },
-        {new: true}
-        
+        {new:true}   //new value will be returned back aswell
     ).select("-password")
+    
 
     return res
-    .status(200)
     .json(new ApiResponse(200, user, "Account details updated successfully"))
-});
+    
+
+})
+
 
 const updateUserAvatar = asyncHandler(async(req, res) => {
     const avatarLocalPath = req.file?.path
+    
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is missing")
     }
 
-    //TODO: delete old image - assignment
+    const user = await User.findById(req.user?._id)
+    if(!user){
+        throw new ApiError(404 , "User not found")
+    }
+
+    // then if older image exists delete it 
+    if (user.avatarLocalPath) {
+        deleteLocalFile(user.avatarLocalPath);
+    }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
 
@@ -300,20 +307,20 @@ const updateUserAvatar = asyncHandler(async(req, res) => {
         
     }
 
-    const user = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
-                avatar: avatar.url
+                avatar :avatar.url
             }
         },
-        {new: true}
+        {new:true}
     ).select("-password")
 
     return res
     .status(200)
     .json(
-        new ApiResponse(200, user, "Avatar image updated successfully")
+        new ApiResponse(200, updatedUser, "Avatar image updated successfully")
     )
 })
 
@@ -324,17 +331,19 @@ const updateUserCoverImage = asyncHandler(async(req, res) => {
         throw new ApiError(400, "Cover image file is missing")
     }
 
-    //TODO: delete old image - assignment
+    const user =await User.findById(req.user?._id)
+    if(!user){
+        throw new ApiError(400, "Cover image is missing!")
+    }
 
 
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if (!coverImage.url) {
-        throw new ApiError(400, "Error while uploading on avatar")
-        
+        throw new ApiError(400, "Error while uploading image")        
     }
 
-    const user = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
@@ -347,7 +356,7 @@ const updateUserCoverImage = asyncHandler(async(req, res) => {
     return res
     .status(200)
     .json(
-        new ApiResponse(200, user, "Cover image updated successfully")
+        new ApiResponse(200, updatedUser, "Cover image updated successfully")
     )
 })
 
