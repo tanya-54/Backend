@@ -295,16 +295,15 @@ const updateUserAvatar = asyncHandler(async(req, res) => {
         throw new ApiError(404 , "User not found")
     }
 
-    // then if older image exists delete it 
-    if (user.avatarLocalPath) {
-        deleteLocalFile(user.avatarLocalPath);
-    }
-
     const avatar = await uploadOnCloudinary(avatarLocalPath)
 
     if (!avatar.url) {
         throw new ApiError(400, "Error while uploading on avatar")
         
+    }
+
+    if(user.avatarLocalPath){
+        deleteLocalFile(user.avaterLocalPath);
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -341,6 +340,10 @@ const updateUserCoverImage = asyncHandler(async(req, res) => {
 
     if (!coverImage.url) {
         throw new ApiError(400, "Error while uploading image")        
+    }
+
+    if(user.coverImageLocalPath){
+        deleteLocalFile(user.avatarLocalPath)
     }
 
     const updatedUser = await User.findByIdAndUpdate(
