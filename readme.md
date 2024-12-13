@@ -8,3 +8,7 @@
 3. Media Handling: I integrated Multer for file uploads to manage user avatars and cover images, with Cloudinary storing URLs for these media files. This setup optimizes storage and ensures faster media content delivery to users.
 
 4. Security: For secure user authentication, I implemented JWT (JSON Web Tokens) and bcrypt for password hashing, enhancing user data security and protecting sensitive information against unauthorized access. Additionally, I used CORS (Cross-Origin Resource Sharing) to secure data exchanges between the frontend and backend.
+
+
+
+**Model Schema Reference**:https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj
